@@ -1,4 +1,4 @@
-org: dominmuda
+org: DominMuda
 app: todo-list-serverless
 service: serverless-rest-api-with-dynamodb
 
