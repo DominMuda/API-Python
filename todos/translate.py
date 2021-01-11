@@ -22,8 +22,9 @@ def translate(event, context):
 
     text = "It is raining today in Seattle"
     print('Calling DetectDominantLanguage')
-    detected_language = json.dumps(comprehend.detect_dominant_language(Text = text), sort_keys=True, indent=4)
+    detected_language = json.dumps(comprehend.detect_dominant_language(Text = text), indent=4)
 
+    print(detected_language)
 
     target_language = event['pathParameters']['language']
     
@@ -39,7 +40,8 @@ def translate(event, context):
     
     response = {
        "statusCode": 200,
-        "body": detected_language['LanguageCode']
+        "body": json.dumps(detected_language['LanguageCode'],
+                           cls=decimalencoder.DecimalEncoder)
     }
 
     return response
