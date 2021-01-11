@@ -22,7 +22,7 @@ def translate(event, context):
 
     text = "It is raining today in Seattle"
     print('Calling DetectDominantLanguage')
-    detected_language = json.dumps(comprehend.detect_dominant_language(Text = text), indent=4)
+    detected_language = comprehend.detect_dominant_language(Text = text)
 
     print(detected_language)
 
