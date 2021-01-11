@@ -6,7 +6,7 @@ import boto3
 dynamodb = boto3.resource('dynamodb')
 
 
-def get(event, context):
+def translate(event, context):
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
     
     comprehend = boto3.client(service_name='comprehend', region_name='us-east-1', use_ssl=True)
