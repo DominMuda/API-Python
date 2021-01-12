@@ -21,7 +21,7 @@ def translate(event, context):
 
 
     text = result['Item']['text']
-    detected_language = comprehend.detect_dominant_language(Text = text)
+    #detected_language = comprehend.detect_dominant_language(Text = text)
     target_language = event['pathParameters']['language']
     
 
@@ -36,7 +36,7 @@ def translate(event, context):
     
     response = {
        "statusCode": 200,
-        "body": json.dumps(detected_language['Languages']['LanguageCode'],
+        "body": json.dumps(text,
                            cls=decimalencoder.DecimalEncoder)
     }
 
