@@ -25,18 +25,12 @@ def translate(event, context):
     target_language = event['pathParameters']['language']
     
 
-    resultTx = translate.translate_text(Text=input_text, SourceLanguageCode=detected_language, TargetLanguageCode=target_language)
+    translated_text = translate.translate_text(Text=input_text, SourceLanguageCode=detected_language, TargetLanguageCode=target_language)
 
-    # create a response
-    #response = {
-    #   "statusCode": 200,
-    #    "body": json.dumps(result['Item'],
-    #                       cls=decimalencoder.DecimalEncoder)
-    #}
-    
+
     response = {
         "statusCode": 200,
-        "body": json.dumps(resultTx,
+        "body": json.dumps(translated_text,
                         cls=decimalencoder.DecimalEncoder)
 
     }
