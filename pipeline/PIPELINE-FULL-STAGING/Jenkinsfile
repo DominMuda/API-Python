@@ -12,7 +12,16 @@ pipeline {
             steps {
                 // Get some code from a CodeCommit repository
                 sh "git config --global credential.helper '!aws codecommit credential-helper \$@'"
-                sh "git clone https://${env.CODECOMMIT_USER}:${env.CODECOMMIT_PASSWORD}@git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"
+                //sh "git clone https://${env.CODECOMMIT_USER}:${env.CODECOMMIT_PASSWORD}@git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"
+
+                checkout changelog:true, poll:true, scm:[
+                    $class:'GitSCM',
+                    branches: [[name: "develop"]],
+                    doGenerateSubmoduleConfigurations: false, 
+                    submoduleCfg: [], 
+                    userRemoteConfigs:[[credentialsId: "codecommit-user", url: "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"]]
+                ]
+
             }
         }
         stage('SetUp'){
