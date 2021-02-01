@@ -16,7 +16,7 @@ pipeline {
         }
         stage('SetUp'){
             steps{
-                // Setup Virtualenv for testing
+                echo "akusjd"
             }
         }
         stage('Test'){
