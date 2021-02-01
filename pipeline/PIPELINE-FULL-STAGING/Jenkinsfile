@@ -24,22 +24,13 @@ pipeline {
                 dir("todo-list-serverless/test") {
                     // Static program analysis -> radon
                     echo 'Make some cool static program analysis wich radon. IIs the code enought simple to understand?'
-                }
-            }
-            steps{
-                dir("todo-list-serverless/test") {
+
                     // Quality program analysis -> flake8
                     echo 'echo My code has enought quality?'
-                }
-            }
-            steps{
-                dir("todo-list-serverless/test") {
+
                     // Security programa analysis -> bandit
                     echo 'Make some security analysis of the code. Is the code secure?'
-                }
-            }
-            steps{
-                dir("todo-list-serverless/test") {
+
                     // Unitary testing -> unittest or pytest
                     sh ''
                     // Coverage report -> coverage
