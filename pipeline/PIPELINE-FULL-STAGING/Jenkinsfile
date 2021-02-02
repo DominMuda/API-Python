@@ -34,9 +34,10 @@ pipeline {
         }
         stage('Test'){
             steps{
-                dir("todo-list-aws/test") {
+                dir("todo-list-aws") {
                     // Static program analysis -> radon
                     echo 'Make some cool static program analysis wich radon. IIs the code enought simple to understand?'
+                    sh "bash scripts/staging-test.sh"
 
                     // Quality program analysis -> flake8
                     echo 'echo My code has enought quality?'
