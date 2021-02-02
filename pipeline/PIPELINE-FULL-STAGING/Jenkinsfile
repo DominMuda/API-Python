@@ -17,7 +17,8 @@ pipeline {
                 checkout changelog:true, poll:true, scm:[
                     $class:'GitSCM',
                     branches: [[name: "develop"]],
-                    doGenerateSubmoduleConfigurations: false, 
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'todo-list-aws']],
                     submoduleCfg: [], 
                     userRemoteConfigs:[[credentialsId: "codecommit-user", url: "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"]]
                 ]
@@ -26,8 +27,9 @@ pipeline {
         }
         stage('SetUp'){
             steps{
-                sh "python3.7 -m venv py37venv"
-                sh "source py37venv/bin/activate"
+                dir("todo-list-aws") {
+                    sh "bash scripts/staging-setup.sh"
+                }
             }
         }
         stage('Test'){
