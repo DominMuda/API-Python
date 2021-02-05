@@ -46,7 +46,6 @@ pipeline {
                     echo 'Make some security analysis of the code. Is the code secure?'
 
                     // Unitary testing -> unittest or pytest
-                    sh ''
                     // Coverage report -> coverage
                     echo 'Execute something like coverage run -m & coverage report -m'
                 }
@@ -57,9 +56,9 @@ pipeline {
                 dir("todo-list-aws") {
                     // Build release
                     echo 'Maybe something like sam build?'
-                    sh "sam build ..."
+                    sh "bash scripts/staging-build.sh"
                     // Package release and persist in s3 bucket
-                    sh "sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${env.COUNTRY}-${env.TEAM}-${env.ENVIRONMENT}-${env.SERVICE}-${env.RAND_ID}-artifacts" 
+                    //sh "sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${env.COUNTRY}-${env.TEAM}-${env.ENVIRONMENT}-${env.SERVICE}-${env.RAND_ID}-artifacts" 
                 }
             }
         }
