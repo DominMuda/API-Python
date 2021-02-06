@@ -58,7 +58,7 @@ pipeline {
                     echo 'Maybe something like sam build?'
                     sh "bash scripts/staging-build.sh"
                     // Package release and persist in s3 bucket
-                    //sh "sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${env.COUNTRY}-${env.TEAM}-${env.ENVIRONMENT}-${env.SERVICE}-${env.RAND_ID}-artifacts" 
+                    //sh "export RAND_ID='30985' && sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${env.COUNTRY}-${env.TEAM}-${env.ENVIRONMENT}-${env.SERVICE}-${env.RAND_ID}-artifacts" 
                 }
             }
         }
