@@ -69,7 +69,6 @@ pipeline {
                     // Unittest or pytest                   
                     // Integration test over local -> unittest or pytest against the lambda functions.
                     sh "bash scripts/staging-localtest.sh"
-                    echo 'test all methods works fine. Maybe with sam-local and aws dynamodb official docker image'
                 }   
             }
         }
@@ -77,7 +76,7 @@ pipeline {
             steps{
                 dir("todo-list-aws") {
                     // Deploy architecture
-                    sh "yes | sam deploy --template-file packaged.yaml --stack-name ${env.STACK_NAME} --parameter-overrides Stage=todoTableStg"
+                    sh "yes | sam deploy --template-file packaged.yaml --force-upload --stack-name ${env.STACK_NAME} --parameter-overrides Stage=todoTableStg"
                 }   
             }
         }
