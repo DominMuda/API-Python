@@ -4,6 +4,7 @@ pipeline {
         stage('Clean'){    
             steps {
                 deleteDir()
+                sh "docker stop dynamodb"
                 sh 'printenv'
             }
         }
