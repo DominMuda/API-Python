@@ -76,8 +76,8 @@ pipeline {
             steps{
                 dir("todo-list-aws") {
                     // Deploy architecture
-                    sh "aws cloudformation delete-stack --stack-name '${env.STACK_NAME}-${env.ENVIRONMENT}'"
-                    sh "yes | sam deploy --template-file packaged.yaml --stack-name '${env.STACK_NAME}-${env.ENVIRONMENT}' --parameter-overrides Stage=todoTableStg"
+                    //sh "aws cloudformation delete-stack --stack-name '${env.STACK_NAME}-${env.ENVIRONMENT}'"
+                    sh "bash scripts/staging-deploy.sh"
                 }   
             }
         }
