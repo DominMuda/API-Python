@@ -1,13 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Clean'){    
-            steps {
-                deleteDir()
-                sh 'printenv'
-            }
-        }
-
         stage('Checkout') {
             steps {
                 // Get some code from a CodeCommit repository
@@ -22,7 +15,6 @@ pipeline {
                     submoduleCfg: [], 
                     userRemoteConfigs:[[credentialsId: "codecommit-user", url: "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"]]
                 ]
-
             }
         }
         stage('SetUp'){
@@ -59,6 +51,12 @@ pipeline {
                     // Unitary testing -> unittest or pytest against the lambda functions.
                     sh "bash scripts/after-deploy-tests.sh"
                 }   
+            }
+        }
+        stage('Clean'){    
+            steps {
+                deleteDir()
+                sh 'docker stop dynamodb'
             }
         }
     }

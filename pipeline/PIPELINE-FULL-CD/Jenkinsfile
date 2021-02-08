@@ -1,1 +1,63 @@
-//A rellenar por el alumno
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                // Get some code from a CodeCommit repository
+                sh "git config --global credential.helper '!aws codecommit credential-helper \$@'"
+                //sh "git clone https://${env.CODECOMMIT_USER}:${env.CODECOMMIT_PASSWORD}@git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"
+
+                checkout changelog:true, poll:true, scm:[
+                    $class:'GitSCM',
+                    branches: [[name: "master"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'todo-list-aws']],
+                    submoduleCfg: [], 
+                    userRemoteConfigs:[[credentialsId: "codecommit-user", url: "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"]]
+                ]
+            }
+        }
+        stage('SetUp'){
+            steps{
+                dir("todo-list-aws") {
+                    sh "bash scripts/staging-setup.sh"
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                dir("todo-list-aws") {
+                    // Build release
+                    echo 'Maybe something like sam build?'
+                    sh "bash scripts/build.sh"
+                    // Package release and persist in s3 bucket
+                    //sh "export RAND_ID='30985' && sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${env.COUNTRY}-${env.TEAM}-${env.ENVIRONMENT}-${env.SERVICE}-${env.RAND_ID}-artifacts" 
+                }
+            }
+        }
+        stage('Deploy'){
+            steps{
+                dir("todo-list-aws") {
+                    // Deploy architecture
+                    //sh "aws cloudformation delete-stack --stack-name '${env.STACK_NAME}-${env.ENVIRONMENT}'"
+                    sh "bash scripts/production-deploy.sh"
+                }   
+            }
+        }
+        stage('Integration Test after deploy'){
+            steps{
+                dir("todo-list-aws") {
+                    // Unittest or pytest                   
+                    // Unitary testing -> unittest or pytest against the lambda functions.
+                    sh "bash scripts/after-deploy-tests.sh"
+                }   
+            }
+        }
+        stage('Clean'){    
+            steps {
+                deleteDir()
+                sh 'docker stop dynamodb'
+            }
+        }
+    }
+}

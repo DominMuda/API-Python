@@ -1,13 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Clean'){    
-            steps {
-                deleteDir()
-                sh 'printenv'
-            }
-        }
-
         stage('Checkout') {
             steps {
                 // Get some code from a CodeCommit repository
@@ -22,7 +15,6 @@ pipeline {
                     submoduleCfg: [], 
                     userRemoteConfigs:[[credentialsId: "codecommit-user", url: "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"]]
                 ]
-
             }
         }
         stage('SetUp'){
@@ -88,6 +80,12 @@ pipeline {
                     sh "bash scripts/after-deploy-tests.sh"
                     sh "docker stop dynamodb"
                 }   
+            }
+        }
+        stage('Clean'){    
+            steps {
+                deleteDir()
+                sh 'docker stop dynamodb'
             }
         }
     }
