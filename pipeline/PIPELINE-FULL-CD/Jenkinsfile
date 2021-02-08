@@ -37,10 +37,11 @@ pipeline {
                             submoduleCfg: [], 
                             userRemoteConfigs:[[credentialsId: "codecommit-user", url: "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"]]
                         ]
-
-                        sh "git checkout master"
-                        sh "git merge develop"
-                        sh "git push origin master"
+                        dir('todo-list-aws'){
+                            sh "git checkout master"
+                            sh "git merge develop"
+                            sh "git push origin master"
+                        }
                     }
                 }
             }
