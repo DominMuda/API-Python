@@ -53,11 +53,11 @@ pipeline {
                 }   
             }
         }
-        stage('Clean'){    
-            steps {
-                deleteDir()
-                sh 'docker stop dynamodb'
-            }
+    }
+    post {
+        always {
+            deleteDir() /* clean up our workspace */
+            sh 'docker stop dynamodb'
         }
     }
 }
