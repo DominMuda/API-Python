@@ -23,22 +23,24 @@ pipeline {
             }
         }
         stage('Promote to master'){
-            if(production_job.result == "SUCCESS" && staging_job.result == "SUCCESS"){
-                sh "git config --global credential.helper '!aws codecommit credential-helper \$@'"
-                //sh "git clone https://${env.CODECOMMIT_USER}:${env.CODECOMMIT_PASSWORD}@git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"
+            steps{
+                if(production_job.result == "SUCCESS" && staging_job.result == "SUCCESS"){
+                    sh "git config --global credential.helper '!aws codecommit credential-helper \$@'"
+                    //sh "git clone https://${env.CODECOMMIT_USER}:${env.CODECOMMIT_PASSWORD}@git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"
 
-                checkout changelog:true, poll:true, scm:[
-                    $class:'GitSCM',
-                    branches: [[name: "develop"]],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'todo-list-aws']],
-                    submoduleCfg: [], 
-                    userRemoteConfigs:[[credentialsId: "codecommit-user", url: "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"]]
-                ]
+                    checkout changelog:true, poll:true, scm:[
+                        $class:'GitSCM',
+                        branches: [[name: "develop"]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'todo-list-aws']],
+                        submoduleCfg: [], 
+                        userRemoteConfigs:[[credentialsId: "codecommit-user", url: "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"]]
+                    ]
 
-                sh "git checkout master"
-                sh "git merge develop"
-                sh "git push origin master"
+                    sh "git checkout master"
+                    sh "git merge develop"
+                    sh "git push origin master"
+                }
             }
         }
     }
