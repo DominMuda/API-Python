@@ -23,7 +23,7 @@ pipeline {
             }
         }
         stage('Promote to master'){
-            if(production_job.result = "SUCCESS" && staging_job.result = "SUCCESS"){
+            if(production_job.result == "SUCCESS" && staging_job.result == "SUCCESS"){
                 sh "git config --global credential.helper '!aws codecommit credential-helper \$@'"
                 //sh "git clone https://${env.CODECOMMIT_USER}:${env.CODECOMMIT_PASSWORD}@git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"
 
