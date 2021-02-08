@@ -5,8 +5,8 @@ pipeline {
             steps {
                 // Get some code from a CodeCommit repository
                 script{
-                    def staging-job = build job: 'PIPELINE-FULL-STAGING', propagate: true, wait:true
-                    echo staging-job.result
+                    build job: 'PIPELINE-FULL-STAGING', propagate: true, wait:true
+                    //echo staging-job.result
                 }
             }
         }
