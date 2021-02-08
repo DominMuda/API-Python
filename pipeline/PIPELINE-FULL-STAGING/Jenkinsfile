@@ -57,7 +57,7 @@ pipeline {
                 dir("todo-list-aws") {
                     // Build release
                     echo 'Maybe something like sam build?'
-                    sh "bash scripts/staging-build.sh"
+                    sh "bash scripts/build.sh"
                     // Package release and persist in s3 bucket
                     //sh "export RAND_ID='30985' && sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${env.COUNTRY}-${env.TEAM}-${env.ENVIRONMENT}-${env.SERVICE}-${env.RAND_ID}-artifacts" 
                 }
@@ -86,7 +86,7 @@ pipeline {
                 dir("todo-list-aws") {
                     // Unittest or pytest                   
                     // Unitary testing -> unittest or pytest against the lambda functions.
-                    echo 'test all methods works fine'
+                    sh "bash scripts/after-deploy-tests.sh"
                 }   
             }
         }
