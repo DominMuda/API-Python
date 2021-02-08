@@ -39,8 +39,9 @@ pipeline {
                         ]
                         dir('todo-list-aws'){
                             sh "git fetch --all"
+                            sh "git branch"
                             sh "git checkout master"
-                            sh "git merge develop"
+                            sh "git merge origin/develop"
                             sh "git push origin master"
                         }
                     }
