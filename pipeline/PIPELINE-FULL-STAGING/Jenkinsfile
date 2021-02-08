@@ -78,7 +78,6 @@ pipeline {
                     // Unittest or pytest                   
                     // Unitary testing -> unittest or pytest against the lambda functions.
                     sh "bash scripts/after-deploy-tests.sh"
-                    sh "docker stop dynamodb"
                 }   
             }
         }
