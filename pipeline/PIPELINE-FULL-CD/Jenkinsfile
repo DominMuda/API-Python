@@ -1,3 +1,6 @@
+def staging_job = ""
+def production_job = ""
+
 pipeline {
     agent any
     stages {
@@ -5,10 +8,38 @@ pipeline {
             steps {
                 // Get some code from a CodeCommit repository
                 script{
-                    build job: 'PIPELINE-FULL-STAGING', propagate: true, wait:true
-                    //echo staging-job.result
+                    staging_job=build job: 'PIPELINE-FULL-STAGING', propagate: true, wait:true
+                    echo staging_job.result
                 }
             }
+        }
+        stage('Run Production') {
+            steps {
+                // Get some code from a CodeCommit repository
+                script{
+                    production_job=build job: 'PIPELINE-FULL-PRODUCTION', propagate: true, wait:true
+                    echo production_job.result
+                }
+            }
+        }
+        stage('Promote to master'){
+
+            if 
+                sh "git config --global credential.helper '!aws codecommit credential-helper \$@'"
+                //sh "git clone https://${env.CODECOMMIT_USER}:${env.CODECOMMIT_PASSWORD}@git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"
+
+                checkout changelog:true, poll:true, scm:[
+                    $class:'GitSCM',
+                    branches: [[name: "develop"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'todo-list-aws']],
+                    submoduleCfg: [], 
+                    userRemoteConfigs:[[credentialsId: "codecommit-user", url: "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/todo-list-aws"]]
+                ]
+
+                sh "git checkout master"
+                sh "git merge develop"
+                sh "git push origin master"
         }
     }
 }
